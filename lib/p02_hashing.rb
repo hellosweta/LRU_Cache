@@ -5,9 +5,16 @@ end
 class Array
   def hash
     integer = 0
+    counter = 0
     self.each_with_index do |el, idx|
-      integer += (el.ord * idx)
+      if el.is_a?(Array)
+        counter += 1
+        el.hash
+      else
+        integer += (el.ord * idx)
+      end
     end
+    integer += counter
     integer.hash
   end
 end
