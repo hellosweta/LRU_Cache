@@ -69,12 +69,12 @@ class HashMap
   end
 
   def resize!
-    previous_num_buckets = @count - 1
+    previous_num_buckets = @count
     elements = {}
     self.each do |k, v|
       elements[k] = v
     end
-    @store = Array.new((previous_num_buckets+3) * 2) {LinkedList.new}
+    @store = Array.new((previous_num_buckets+2) * 2) {LinkedList.new}
     @count = 0
     elements.each do |k,v|
       set(k,v)
