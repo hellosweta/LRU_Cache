@@ -19,15 +19,13 @@ class HashMap
     if @store[bucket(key)].include?(key)
       @store[bucket(key)].update(key,val)
     else
+      if @count == num_buckets
+        resize!
+      end
       @store[bucket(key)].append(key,val)
       @count += 1
-      if @count > num_buckets
-        resize!
-        @count += 1
-      end
+
     end
-
-
   end
 
   def get(key)
@@ -52,12 +50,12 @@ class HashMap
   end
 
   # uncomment when you have Enumerable included
-  # def to_s
-  #   pairs = inject([]) do |strs, (k, v)|
-  #     strs << "#{k.to_s} => #{v.to_s}"
-  #   end
-  #   "{\n" + pairs.join(",\n") + "\n}"
-  # end
+  def to_s
+    pairs = inject([]) do |strs, (k, v)|
+      strs << "#{k.to_s} => #{v.to_s}"
+    end
+    "{\n" + pairs.join(",\n") + "\n}"
+  end
 
   alias_method :[], :get
   alias_method :[]=, :set
@@ -69,12 +67,12 @@ class HashMap
   end
 
   def resize!
-    previous_num_buckets = @count
+    previous_num_buckets = num_buckets
     elements = {}
     self.each do |k, v|
       elements[k] = v
     end
-    @store = Array.new((previous_num_buckets+2) * 2) {LinkedList.new}
+    @store = Array.new((previous_num_buckets) * 2) {LinkedList.new}
     @count = 0
     elements.each do |k,v|
       set(k,v)

@@ -105,6 +105,7 @@ describe HashMap do
     end
 
     it "should increase the size of the store" do
+      puts hash 
       old_store_length = hash.instance_variable_get(:@store).length
       hash.send(:resize!)
       new_store_length = hash.instance_variable_get(:@store).length
